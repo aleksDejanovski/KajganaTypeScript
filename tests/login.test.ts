@@ -74,3 +74,31 @@ test("Add to cart tegovi flow", async ({ page }) => {
   await page.waitForTimeout(3000);
   await expect(page.getByRole("heading", { name: "Кошничка" })).toBeEnabled();
 });
+
+test("add item from osvetluvanje", async ({ page }) => {
+  await page.goto("https://shop.kajgana.com/203-dom");
+  await page.hover("text=Најава");
+
+  await page.click("text=Најави се");
+
+  await expect(
+    page.locator("//h1[text()='Најавете се на вашата сметка']")
+  ).toBeEnabled();
+  await page.fill("#email", "dejanovski_a@yahoo.com");
+  await page.waitForTimeout(3000);
+  await page.fill("#field-password", "aA123456789");
+  await page.getByRole("button", { name: "Најави се" }).click();
+  await page.getByRole("link", { name: "Осветлување" }).hover();
+  await page.getByRole("link", { name: "Столни ламби", exact: true }).click();
+  await expect(
+    page.locator("#left-column").getByRole("link", { name: "Столни ламби" })
+  ).toBeEnabled();
+  await page.getByPlaceholder("Внеси поим за пребарување...").fill("lambario");
+  await page.locator(".tvheader-top-search-wrapper").click();
+  await page
+    .getByRole("link", { name: "Lambario – бела LED столна ламбa" })
+    .first()
+    .click();
+  await page.getByRole("button", { name: "Додај во кошничка" }).click();
+  await expect(page.getByRole("heading", { name: "Кошничка" })).toBeEnabled();
+});
